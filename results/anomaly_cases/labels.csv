@@ -1,0 +1,55 @@
+case_id,entity_id,module,key,group,anomaly_type,start,end,duration_h,magnitude,magnitude_unit,is_synthetic,source,note
+NAT-M1-01-001,Eagle_office_Norbert,M1_power,power_active_kw,DQ_quality,stuck_sensor,2017-04-20 02:00:00,2017-04-20 11:00:00,10,,,False,natural,present in the real series before injection
+SYN-M1-01-01,Eagle_office_Norbert,M1_power,power_active_kw,A_consumption,spike,2017-03-16 17:00:00,2017-03-16 18:00:00,2,297.72,kW_added,True,injected,added 1.0-2.0 x p95 of the meter
+SYN-M1-01-02,Eagle_office_Norbert,M1_power,power_active_kw,A_consumption,off_hours_run,2017-04-18 20:00:00,2017-04-19 03:00:00,8,109.6,kW_level,True,injected,load held at 70-100% of working-hour median from 20:00
+SYN-M1-01-03,Eagle_office_Norbert,M1_power,power_active_kw,A_consumption,leak,2017-04-27 01:00:00,2017-05-02 21:00:00,141,32.18,kW_added,True,injected,constant 24/7 offset (30-60% of night base). Surrogate for M3 water leak: the shared set has no water meter
+SYN-M1-01-04,Eagle_office_Norbert,M4_air,co2_ppm,A_level,co2_sustained_high,2017-05-19 08:00:00,2017-05-21 07:00:00,48,286.1,ppm_added,True,injected,"synthetic CO2 channel, ventilation-failure style step"
+SYN-M1-01-05,Eagle_office_Norbert,M1_power,power_active_kw,DQ_quality,data_loss,2017-06-22 22:00:00,2017-06-24 16:00:00,43,0.0,,True,injected,samples removed
+SYN-M1-01-06,Eagle_office_Norbert,M1_power,power_active_kw,DQ_quality,stuck_sensor,2017-07-14 04:00:00,2017-07-14 13:00:00,10,90.19,kW_frozen,True,injected,value frozen at first sample of the window
+SYN-M1-01-07,Eagle_office_Norbert,M1_power,power_active_kw,A_consumption,spike,2017-07-19 20:00:00,2017-07-19 20:00:00,1,299.97,kW_added,True,injected,added 1.0-2.0 x p95 of the meter
+SYN-M1-01-08,Eagle_office_Norbert,M1_power,power_active_kw,A_consumption,off_hours_run,2017-08-11 20:00:00,2017-08-12 04:00:00,9,103.64,kW_level,True,injected,load held at 70-100% of working-hour median from 20:00
+SYN-M1-02-01,Hog_office_Emmanuel,M1_power,power_active_kw,A_consumption,spike,2017-03-27 17:00:00,2017-03-27 18:00:00,2,52.56,kW_added,True,injected,added 1.0-2.0 x p95 of the meter
+SYN-M1-02-02,Hog_office_Emmanuel,M1_power,power_active_kw,A_consumption,off_hours_run,2017-04-19 20:00:00,2017-04-20 05:00:00,10,33.98,kW_level,True,injected,load held at 70-100% of working-hour median from 20:00
+SYN-M1-02-03,Hog_office_Emmanuel,M1_power,power_active_kw,A_consumption,leak,2017-05-03 00:00:00,2017-05-09 10:00:00,155,9.71,kW_added,True,injected,constant 24/7 offset (30-60% of night base). Surrogate for M3 water leak: the shared set has no water meter
+SYN-M1-02-04,Hog_office_Emmanuel,M4_air,co2_ppm,A_level,co2_sustained_high,2017-05-23 08:00:00,2017-05-26 05:00:00,70,358.4,ppm_added,True,injected,"synthetic CO2 channel, ventilation-failure style step"
+SYN-M1-02-05,Hog_office_Emmanuel,M1_power,power_active_kw,DQ_quality,data_loss,2017-06-12 12:00:00,2017-06-13 20:00:00,33,0.0,,True,injected,samples removed
+SYN-M1-02-06,Hog_office_Emmanuel,M1_power,power_active_kw,DQ_quality,stuck_sensor,2017-07-10 00:00:00,2017-07-10 22:00:00,23,22.7,kW_frozen,True,injected,value frozen at first sample of the window
+SYN-M1-02-07,Hog_office_Emmanuel,M1_power,power_active_kw,A_consumption,spike,2017-07-28 01:00:00,2017-07-28 02:00:00,2,64.81,kW_added,True,injected,added 1.0-2.0 x p95 of the meter
+SYN-M1-02-08,Hog_office_Emmanuel,M1_power,power_active_kw,A_consumption,off_hours_run,2017-08-14 20:00:00,2017-08-15 03:00:00,8,35.82,kW_level,True,injected,load held at 70-100% of working-hour median from 20:00
+SYN-M1-03-01,Hog_office_Shon,M1_power,power_active_kw,A_consumption,spike,2017-03-30 04:00:00,2017-03-30 05:00:00,2,170.39,kW_added,True,injected,added 1.0-2.0 x p95 of the meter
+SYN-M1-03-02,Hog_office_Shon,M1_power,power_active_kw,A_consumption,off_hours_run,2017-04-11 20:00:00,2017-04-12 05:00:00,10,88.76,kW_level,True,injected,load held at 70-100% of working-hour median from 20:00
+SYN-M1-03-03,Hog_office_Shon,M1_power,power_active_kw,A_consumption,leak,2017-04-28 22:00:00,2017-05-04 07:00:00,130,26.86,kW_added,True,injected,constant 24/7 offset (30-60% of night base). Surrogate for M3 water leak: the shared set has no water meter
+SYN-M1-03-04,Hog_office_Shon,M4_air,co2_ppm,A_level,co2_sustained_high,2017-05-25 08:00:00,2017-05-28 03:00:00,68,322.7,ppm_added,True,injected,"synthetic CO2 channel, ventilation-failure style step"
+SYN-M1-03-05,Hog_office_Shon,M1_power,power_active_kw,DQ_quality,data_loss,2017-06-19 05:00:00,2017-06-20 00:00:00,20,0.0,,True,injected,samples removed
+SYN-M1-03-06,Hog_office_Shon,M1_power,power_active_kw,DQ_quality,stuck_sensor,2017-07-10 14:00:00,2017-07-11 07:00:00,18,96.11,kW_frozen,True,injected,value frozen at first sample of the window
+SYN-M1-03-07,Hog_office_Shon,M1_power,power_active_kw,A_consumption,spike,2017-07-20 01:00:00,2017-07-20 02:00:00,2,169.93,kW_added,True,injected,added 1.0-2.0 x p95 of the meter
+SYN-M1-03-08,Hog_office_Shon,M1_power,power_active_kw,A_consumption,off_hours_run,2017-08-16 20:00:00,2017-08-17 04:00:00,9,78.8,kW_level,True,injected,load held at 70-100% of working-hour median from 20:00
+NAT-M1-04-001,Panther_office_Shauna,M1_power,power_active_kw,DQ_quality,data_loss,2017-02-14 19:00:00,2017-02-14 23:00:00,5,,,False,natural,present in the real series before injection
+NAT-M1-04-002,Panther_office_Shauna,M1_power,power_active_kw,DQ_quality,data_loss,2017-06-19 19:00:00,2017-06-20 00:00:00,6,,,False,natural,present in the real series before injection
+SYN-M1-04-01,Panther_office_Shauna,M1_power,power_active_kw,A_consumption,spike,2017-03-18 23:00:00,2017-03-18 23:00:00,1,166.72,kW_added,True,injected,added 1.0-2.0 x p95 of the meter
+SYN-M1-04-02,Panther_office_Shauna,M1_power,power_active_kw,A_consumption,off_hours_run,2017-04-10 20:00:00,2017-04-11 05:00:00,10,133.91,kW_level,True,injected,load held at 70-100% of working-hour median from 20:00
+SYN-M1-04-03,Panther_office_Shauna,M1_power,power_active_kw,A_consumption,leak,2017-04-27 12:00:00,2017-05-02 18:00:00,127,29.9,kW_added,True,injected,constant 24/7 offset (30-60% of night base). Surrogate for M3 water leak: the shared set has no water meter
+SYN-M1-04-04,Panther_office_Shauna,M4_air,co2_ppm,A_level,co2_sustained_high,2017-05-22 08:00:00,2017-05-25 02:00:00,67,377.6,ppm_added,True,injected,"synthetic CO2 channel, ventilation-failure style step"
+SYN-M1-04-05,Panther_office_Shauna,M1_power,power_active_kw,DQ_quality,data_loss,2017-06-13 10:00:00,2017-06-14 19:00:00,34,0.0,,True,injected,samples removed
+SYN-M1-04-06,Panther_office_Shauna,M1_power,power_active_kw,DQ_quality,stuck_sensor,2017-07-15 03:00:00,2017-07-15 12:00:00,10,48.41,kW_frozen,True,injected,value frozen at first sample of the window
+SYN-M1-04-07,Panther_office_Shauna,M1_power,power_active_kw,A_consumption,spike,2017-08-04 09:00:00,2017-08-04 10:00:00,2,264.23,kW_added,True,injected,added 1.0-2.0 x p95 of the meter
+SYN-M1-04-08,Panther_office_Shauna,M1_power,power_active_kw,A_consumption,off_hours_run,2017-08-19 20:00:00,2017-08-20 04:00:00,9,117.87,kW_level,True,injected,load held at 70-100% of working-hour median from 20:00
+NAT-M1-05-001,Rat_office_Loyd,M1_power,power_active_kw,DQ_quality,data_loss,2017-06-27 00:00:00,2017-06-27 23:00:00,24,,,False,natural,present in the real series before injection
+SYN-M1-05-01,Rat_office_Loyd,M1_power,power_active_kw,A_consumption,spike,2017-03-19 02:00:00,2017-03-19 03:00:00,2,165.89,kW_added,True,injected,added 1.0-2.0 x p95 of the meter
+SYN-M1-05-02,Rat_office_Loyd,M1_power,power_active_kw,A_consumption,off_hours_run,2017-04-11 20:00:00,2017-04-12 05:00:00,10,52.64,kW_level,True,injected,load held at 70-100% of working-hour median from 20:00
+SYN-M1-05-03,Rat_office_Loyd,M1_power,power_active_kw,A_consumption,leak,2017-04-28 17:00:00,2017-05-02 08:00:00,88,19.59,kW_added,True,injected,constant 24/7 offset (30-60% of night base). Surrogate for M3 water leak: the shared set has no water meter
+SYN-M1-05-04,Rat_office_Loyd,M4_air,co2_ppm,A_level,co2_sustained_high,2017-05-25 08:00:00,2017-05-27 20:00:00,61,350.1,ppm_added,True,injected,"synthetic CO2 channel, ventilation-failure style step"
+SYN-M1-05-05,Rat_office_Loyd,M1_power,power_active_kw,DQ_quality,data_loss,2017-06-11 03:00:00,2017-06-12 01:00:00,23,0.0,,True,injected,samples removed
+SYN-M1-05-06,Rat_office_Loyd,M1_power,power_active_kw,DQ_quality,stuck_sensor,2017-06-29 10:00:00,2017-06-29 21:00:00,12,88.62,kW_frozen,True,injected,value frozen at first sample of the window
+SYN-M1-05-07,Rat_office_Loyd,M1_power,power_active_kw,A_consumption,spike,2017-07-31 19:00:00,2017-07-31 19:00:00,1,169.13,kW_added,True,injected,added 1.0-2.0 x p95 of the meter
+SYN-M1-05-08,Rat_office_Loyd,M1_power,power_active_kw,A_consumption,off_hours_run,2017-08-12 20:00:00,2017-08-13 05:00:00,10,57.22,kW_level,True,injected,load held at 70-100% of working-hour median from 20:00
+SYN-M1-06-01,Wolf_office_Nadia,M1_power,power_active_kw,A_consumption,spike,2017-03-31 12:00:00,2017-03-31 12:00:00,1,142.6,kW_added,True,injected,added 1.0-2.0 x p95 of the meter
+SYN-M1-06-02,Wolf_office_Nadia,M1_power,power_active_kw,A_consumption,off_hours_run,2017-04-08 20:00:00,2017-04-09 03:00:00,8,93.93,kW_level,True,injected,load held at 70-100% of working-hour median from 20:00
+SYN-M1-06-03,Wolf_office_Nadia,M1_power,power_active_kw,A_consumption,leak,2017-05-04 16:00:00,2017-05-08 09:00:00,90,21.43,kW_added,True,injected,constant 24/7 offset (30-60% of night base). Surrogate for M3 water leak: the shared set has no water meter
+SYN-M1-06-04,Wolf_office_Nadia,M4_air,co2_ppm,A_level,co2_sustained_high,2017-05-21 08:00:00,2017-05-24 07:00:00,72,372.7,ppm_added,True,injected,"synthetic CO2 channel, ventilation-failure style step"
+SYN-M1-06-05,Wolf_office_Nadia,M1_power,power_active_kw,DQ_quality,data_loss,2017-06-17 16:00:00,2017-06-18 00:00:00,9,0.0,,True,injected,samples removed
+SYN-M1-06-06,Wolf_office_Nadia,M1_power,power_active_kw,DQ_quality,stuck_sensor,2017-06-28 09:00:00,2017-06-28 22:00:00,14,112.48,kW_frozen,True,injected,value frozen at first sample of the window
+SYN-M1-06-07,Wolf_office_Nadia,M1_power,power_active_kw,A_consumption,spike,2017-07-27 03:00:00,2017-07-27 04:00:00,2,206.67,kW_added,True,injected,added 1.0-2.0 x p95 of the meter
+SYN-M1-06-08,Wolf_office_Nadia,M1_power,power_active_kw,A_consumption,off_hours_run,2017-08-17 20:00:00,2017-08-18 05:00:00,10,92.14,kW_level,True,injected,load held at 70-100% of working-hour median from 20:00
+SYN-M2-01-01,Cockatoo_office_Giovanni,M2_chiller,kw_per_kw_cooling,B_efficiency,efficiency_degradation,2017-06-03 00:00:00,2017-06-30 23:00:00,672,17.7,pct_kw_per_kw_increase,True,injected,linear ramp 7d then hold; chiller power is SYNTHETIC from equipment_params CH-04 curve; reference window 2017-04-01..2017-05-27
+SYN-M2-02-01,Hog_office_Eloise,M2_chiller,kw_per_kw_cooling,B_efficiency,efficiency_degradation,2017-06-10 00:00:00,2017-07-07 23:00:00,672,12.61,pct_kw_per_kw_increase,True,injected,linear ramp 7d then hold; chiller power is SYNTHETIC from equipment_params CH-04 curve; reference window 2017-04-01..2017-05-27

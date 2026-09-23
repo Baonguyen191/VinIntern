@@ -1,0 +1,71 @@
+{
+  "n_injected_cases": 50,
+  "event_recall": 0.98,
+  "type_match_rate": 0.96,
+  "n_events_scored": 489,
+  "n_events_natural": 3,
+  "event_precision": 0.188,
+  "event_precision_by_key": {
+    "co2_ppm": 0.05,
+    "kw_per_kw_cooling": 1.0,
+    "power_active_kw": 0.263
+  },
+  "false_alarms_per_device_day": {
+    "power_active_kw": 0.1037,
+    "co2_ppm": 0.0776,
+    "kw_per_kw_cooling": 0.0
+  },
+  "precision_by_detector_type": [
+    {
+      "type": "co2_sustained_high",
+      "n_events": 162,
+      "true_positive": 8,
+      "event_precision": 0.049
+    },
+    {
+      "type": "data_loss",
+      "n_events": 6,
+      "true_positive": 6,
+      "event_precision": 1.0
+    },
+    {
+      "type": "efficiency_degradation",
+      "n_events": 2,
+      "true_positive": 2,
+      "event_precision": 1.0
+    },
+    {
+      "type": "high_consumption",
+      "n_events": 33,
+      "true_positive": 2,
+      "event_precision": 0.061
+    },
+    {
+      "type": "leak",
+      "n_events": 24,
+      "true_positive": 15,
+      "event_precision": 0.625
+    },
+    {
+      "type": "off_hours_run",
+      "n_events": 179,
+      "true_positive": 37,
+      "event_precision": 0.207
+    },
+    {
+      "type": "spike",
+      "n_events": 76,
+      "true_positive": 15,
+      "event_precision": 0.197
+    },
+    {
+      "type": "stuck_sensor",
+      "n_events": 7,
+      "true_positive": 7,
+      "event_precision": 1.0
+    }
+  ],
+  "note": "Real series may contain real, unlabeled anomalies, so precision is a lower bound.",
+  "seed": 42,
+  "k": 3.0
+}

@@ -1,0 +1,8 @@
+anomaly_type,n_cases,detected,type_match,median_delay_h,event_recall,type_match_rate
+co2_sustained_high,6,6,6,2.0,1.0,1.0
+data_loss,6,6,6,2.0,1.0,1.0
+efficiency_degradation,2,2,2,155.0,1.0,1.0
+leak,6,6,6,3.5,1.0,1.0
+off_hours_run,12,11,11,2.0,0.917,0.917
+spike,12,12,11,0.0,1.0,0.917
+stuck_sensor,6,6,6,3.0,1.0,1.0
