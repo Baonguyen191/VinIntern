@@ -9,7 +9,7 @@ def main():
     parser.add_argument("--output", default=None, help="Output directory")
     parser.add_argument(
         "--pipeline",
-        choices=["towt", "degree-day", "bdg2", "statistical"],
+        choices=["towt", "degree-day", "bdg2", "statistical", "anomaly-cases"],
         default="degree-day",
         help="Pipeline type (default: degree-day)",
     )
@@ -43,9 +43,26 @@ def main():
         help="Rolling window size in days for statistical baseline (default: 28)",
     )
 
+    # Anomaly-cases-specific
+    parser.add_argument(
+        "--data-dir", default=None,
+        help="Normalized data folder (default: data/normalized)",
+    )
+    parser.add_argument("--seed", type=int, default=42, help="Case generation seed (default: 42)")
+
     args = parser.parse_args()
 
-    if args.pipeline == "statistical":
+    if args.pipeline == "anomaly-cases":
+        from src.pipelines.anomaly_cases import run_anomaly_cases_pipeline
+        from src.io.normalized_loader import NORMALIZED_DIR
+
+        run_anomaly_cases_pipeline(
+            data_dir=args.data_dir or NORMALIZED_DIR,
+            output_dir=args.output or "results/anomaly_cases",
+            seed=args.seed,
+            k=args.k,
+        )
+    elif args.pipeline == "statistical":
         from src.pipelines.statistical import run_statistical_pipeline
 
         run_statistical_pipeline(
