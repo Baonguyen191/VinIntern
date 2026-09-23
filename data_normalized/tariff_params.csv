@@ -1,0 +1,50 @@
+# tariff_params.csv
+# NGUON CHINH THUC (tra cuu web luc build, KHONG hardcode so cu):
+#   - Bang gia theo cap dien ap / nhom khach hang:
+#     Quyet dinh so 1279/QD-BCT ngay 09/05/2025 cua Bo Cong Thuong (Quy dinh ve gia ban dien)
+#     (can cu Quyet dinh 07/2025/QD-TTg ve khung gia ban le dien binh quan).
+#     Gia ban le dien binh quan: 2.204,0655 dong/kWh (chua VAT). Ap dung tu ngay 10/05/2025.
+#     Cac muc gia duoi day la GIA CHUA BAO GOM THUE GTGT (VAT), dvt: dong/kWh.
+#   - Khung gio cao diem / binh thuong / thap diem:
+#     Quyet dinh so 963/QD-BCT ngay 30/06/2026 cua Bo Cong Thuong (thay doi so voi khung gio cu
+#     9h30-11h30 & 17h-20h ap dung truoc do). Khung gio THONG NHAT TOAN QUOC, khong phan bien
+#     mien Bac/Trung/Nam, khong phan biet mua he/mua dong.
+#
+# LUU Y QUAN TRONG cho pipeline toi uu chiller (buoc 5, problem.md M2):
+#   - Toa nha van phong (Office) thuong ap nhom kinh_doanh; truong hoc (Education) thuong ap nhom
+#     hanh_chinh_su_nghiep_truong_hoc (2.1 - truong pho thong) - nhom nay la GIA DON NHAT theo cap
+#     dien ap, KHONG CO bieu gia TOU (row_type=price, period=flat). Voi cac toa nha Education trong
+#     bo du lieu, tin hieu chenh lech gia theo gio KHONG TON TAI o nhom gia nay; toi uu lich chay
+#     theo gia dien se khong co y nghia tru khi xac nhan lai hop dong dien thuc te cua toa nha.
+#   - Neu khong biet chinh xac hop dong dien cua toa nha, mac dinh de xuat dung nhom
+#     customer_group=kinh_doanh, voltage_level=tu_22kV_tro_len cho toa nha van phong/thuong mai co
+#     tram bien ap rieng (gia dinh CAN XAC NHAN LAI voi hop dong dien that).
+row_type,customer_group,voltage_level,period,price_vnd_per_kwh,day_of_week,start_time,end_time,source_decision,source_date,effective_date,note
+price,san_xuat,tu_110kV_tro_len,binh_thuong,1811,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,san_xuat,tu_110kV_tro_len,thap_diem,1146,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,san_xuat,tu_110kV_tro_len,cao_diem,3266,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,san_xuat,tu_22kV_den_duoi_110kV,binh_thuong,1833,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,san_xuat,tu_22kV_den_duoi_110kV,thap_diem,1190,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,san_xuat,tu_22kV_den_duoi_110kV,cao_diem,3398,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,san_xuat,tu_6kV_den_duoi_22kV,binh_thuong,1899,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,san_xuat,tu_6kV_den_duoi_22kV,thap_diem,1234,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,san_xuat,tu_6kV_den_duoi_22kV,cao_diem,3508,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,san_xuat,duoi_6kV,binh_thuong,1987,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,san_xuat,duoi_6kV,thap_diem,1300,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,san_xuat,duoi_6kV,cao_diem,3640,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,kinh_doanh,tu_22kV_tro_len,binh_thuong,2887,,,,1279/QD-BCT,2025-05-09,2025-05-10,Mac dinh de xuat cho toa nha van phong co tram rieng - CAN XAC NHAN lai hop dong dien that
+price,kinh_doanh,tu_22kV_tro_len,thap_diem,1609,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,kinh_doanh,tu_22kV_tro_len,cao_diem,5025,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,kinh_doanh,tu_6kV_den_duoi_22kV,binh_thuong,3108,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,kinh_doanh,tu_6kV_den_duoi_22kV,thap_diem,1829,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,kinh_doanh,tu_6kV_den_duoi_22kV,cao_diem,5202,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,kinh_doanh,duoi_6kV,binh_thuong,3152,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,kinh_doanh,duoi_6kV,thap_diem,1918,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,kinh_doanh,duoi_6kV,cao_diem,5422,,,,1279/QD-BCT,2025-05-09,2025-05-10,
+price,hanh_chinh_su_nghiep_truong_hoc,tu_6kV_tro_len,flat,1940,,,,1279/QD-BCT,2025-05-09,2025-05-10,Benh vien/nha tre/mau giao/truong pho thong - KHONG co TOU
+price,hanh_chinh_su_nghiep_truong_hoc,duoi_6kV,flat,2072,,,,1279/QD-BCT,2025-05-09,2025-05-10,Benh vien/nha tre/mau giao/truong pho thong - KHONG co TOU
+time_window,,,cao_diem,,T2-T7,17:30,22:30,963/QD-BCT,2026-06-30,2026-06-30,Chu nhat KHONG ap dung gio cao diem
+time_window,,,binh_thuong,,T2-T7,06:00,17:30,963/QD-BCT,2026-06-30,2026-06-30,
+time_window,,,binh_thuong,,T2-T7,22:30,24:00,963/QD-BCT,2026-06-30,2026-06-30,
+time_window,,,binh_thuong,,CN,06:00,24:00,963/QD-BCT,2026-06-30,2026-06-30,Chu nhat: binh thuong lien tuc tru khung thap diem
+time_window,,,thap_diem,,T2-CN,00:00,06:00,963/QD-BCT,2026-06-30,2026-06-30,Ap dung moi ngay trong tuan ke ca Chu nhat

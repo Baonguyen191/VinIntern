@@ -1,0 +1,14 @@
+# equipment_params.csv
+# Gia tri DIEN HINH gan theo LOAI MAY pho bien (tra cuu dac tinh cong bo chung cua cac dong chiller
+# thuong gap trong tai lieu ky thuat HVAC), KHONG PHAI so lieu do dac tu thiet bi that.
+# CAN THAY bang ho so thiet bi that (bien ban nghiem thu, catalogue nha san xuat, hoac do dac hieu
+# suat tai cho) khi trien khai tren du lieu DMP that - xem problem.md muc 4.3 (Thong so dinh muc).
+#
+# Duong cong EIR-FPLR: P(x) = (Q_rated_kw / COP_rated) * (a + b*x + c*x^2), x = PLR (0-1)
+# Rang buoc thiet ke: a+b+c = 1.0 => tai PLR=1 (day tai) thi P = Q_rated_kw / COP_rated (dung diem dinh muc).
+# min_plr: tai trong toi thieu on dinh truoc khi surge/ngat (dien hinh 15-20% voi may ly tam/truc vit).
+chiller_id,model_type,q_rated_kw,cop_rated,eir_fplr_a,eir_fplr_b,eir_fplr_c,min_plr,min_runtime_min,note
+CH-01,Water-cooled Centrifugal (cong suat lon),1000,6.1,0.170,0.630,0.200,0.15,30,"May lam mat bang nuoc, hieu suat cao, pho bien cho plant lon >500kW"
+CH-02,Water-cooled Screw (truc vit giai nhiet nuoc),700,5.4,0.222,0.478,0.300,0.20,30,"Pho bien cho plant trung binh 300-800kW"
+CH-03,Air-cooled Screw (truc vit giai nhiet gio),500,3.2,0.234,0.427,0.339,0.20,20,"Khong can thap giai nhiet, COP thap hon do lam mat bang gio"
+CH-04,"Air-cooled Scroll (cuon giai nhiet gio, cong suat nho)",300,2.9,0.246,0.404,0.350,0.25,15,"Pho bien cho toa nha nho hoac chay bu tai"
