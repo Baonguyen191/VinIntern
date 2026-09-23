@@ -1,12 +1,16 @@
-<<<<<<< HEAD
-# Byte-compiled / optimized / DLL files
+# Data (large datasets, not tracked)
+data/
+*.parquet
+data_normalized/*.parquet
+
+# Internal notes
+CLAUDE.md
+
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-
-# Large Parquet datasets
-*.parquet
-data_normalized/*.parquet
+*.egg-info/
 
 # Environments
 .venv/
@@ -19,32 +23,8 @@ env/
 .idea/
 .DS_Store
 Thumbs.db
-=======
-# Data (large datasets, not tracked)
-data/
-
-# Documentation (internal)
-docs/
-CLAUDE.md
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.egg-info/
-.venv/
-venv/
-
-# IDE
-.vscode/
-.idea/
-
-# OS
-.DS_Store
-Thumbs.db
 
 # Results: ignore everything except BDG2 statistical pipeline
 results/eweld/
 results/bdg2/degree_day/
 results/bdg2/bdg2_candidate_analysis.csv
->>>>>>> origin/bdg2-statistical-baseline
