@@ -5,7 +5,7 @@ import pandas as pd
 # CUSUM / confirmation-window detectors fire after the anomaly has built up.
 TOLERANCE_AFTER = pd.Timedelta(hours=24)
 
-AMPLITUDE_TYPES = {"spike", "off_hours_run", "leak", "co2_sustained_high"}
+AMPLITUDE_TYPES = {"spike", "off_hours_run", "baseload_rise"}
 
 
 def match_events(labels: pd.DataFrame, events: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -53,20 +53,15 @@ def deviation_check(lab, g: pd.DataFrame, expected: pd.Series) -> dict:
     """
     key = lab.key
     w = (g.index >= lab.start) & (g.index <= lab.end)
-    if lab.anomaly_type == "efficiency_degradation":
-        hold = w & (g.index >= lab.start + pd.Timedelta(days=7))
-        injected = ((g[key] - g[f"{key}_clean"]) / g[f"{key}_clean"] * 100)[hold].mean()
-        measured = ((g[key] - expected) / expected * 100)[hold].mean()
-    else:
-        injected = (g[key] - g[f"{key}_clean"])[w].mean()
-        measured = (g[key] - expected)[w].mean()
+    injected = (g[key] - g[f"{key}_clean"])[w].mean()
+    measured = (g[key] - expected)[w].mean()
     recovery = measured / injected if injected else np.nan
     return {"injected_excess": round(float(injected), 3), "measured_excess": round(float(measured), 3),
             "recovery": round(float(recovery), 3)}
 
 
 def summarize(cases: pd.DataFrame, ev: pd.DataFrame, entity_days: dict[str, float]) -> tuple[pd.DataFrame, dict]:
-    per_type = cases.groupby("anomaly_type").agg(
+    per_type = cases.groupby(["key", "anomaly_type"]).agg(
         n_cases=("case_id", "size"),
         detected=("detected", "sum"),
         type_match=("type_match", "sum"),

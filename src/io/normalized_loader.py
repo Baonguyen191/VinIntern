@@ -2,7 +2,10 @@ from pathlib import Path
 
 import pandas as pd
 
-NORMALIZED_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "normalized"
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+NORMALIZED_DIR = ROOT_DIR / "data_normalized"
+if not NORMALIZED_DIR.exists():
+    NORMALIZED_DIR = ROOT_DIR / "data" / "normalized"
 
 
 def load_telemetry(

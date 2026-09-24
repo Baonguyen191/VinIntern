@@ -1,67 +1,53 @@
 {
-  "n_injected_cases": 50,
-  "event_recall": 0.98,
-  "type_match_rate": 0.96,
-  "n_events_scored": 489,
-  "n_events_natural": 3,
-  "event_precision": 0.188,
+  "n_injected_cases": 72,
+  "event_recall": 1.0,
+  "type_match_rate": 0.944,
+  "n_events_scored": 582,
+  "n_events_natural": 25,
+  "event_precision": 0.242,
   "event_precision_by_key": {
-    "co2_ppm": 0.05,
-    "kw_per_kw_cooling": 1.0,
-    "power_active_kw": 0.263
+    "cooling_kw": 0.112,
+    "power_active_kw": 0.346
   },
   "false_alarms_per_device_day": {
-    "power_active_kw": 0.1037,
-    "co2_ppm": 0.0776,
-    "kw_per_kw_cooling": 0.0
+    "power_active_kw": 0.0968,
+    "cooling_kw": 0.1568
   },
   "precision_by_detector_type": [
     {
-      "type": "co2_sustained_high",
-      "n_events": 162,
-      "true_positive": 8,
-      "event_precision": 0.049
+      "type": "baseload_rise",
+      "n_events": 25,
+      "true_positive": 14,
+      "event_precision": 0.56
     },
     {
       "type": "data_loss",
-      "n_events": 6,
-      "true_positive": 6,
-      "event_precision": 1.0
-    },
-    {
-      "type": "efficiency_degradation",
-      "n_events": 2,
-      "true_positive": 2,
+      "n_events": 10,
+      "true_positive": 10,
       "event_precision": 1.0
     },
     {
       "type": "high_consumption",
-      "n_events": 33,
-      "true_positive": 2,
-      "event_precision": 0.061
-    },
-    {
-      "type": "leak",
-      "n_events": 24,
-      "true_positive": 15,
-      "event_precision": 0.625
+      "n_events": 73,
+      "true_positive": 9,
+      "event_precision": 0.123
     },
     {
       "type": "off_hours_run",
-      "n_events": 179,
-      "true_positive": 37,
-      "event_precision": 0.207
+      "n_events": 356,
+      "true_positive": 80,
+      "event_precision": 0.225
     },
     {
       "type": "spike",
-      "n_events": 76,
-      "true_positive": 15,
-      "event_precision": 0.197
+      "n_events": 108,
+      "true_positive": 18,
+      "event_precision": 0.167
     },
     {
       "type": "stuck_sensor",
-      "n_events": 7,
-      "true_positive": 7,
+      "n_events": 10,
+      "true_positive": 10,
       "event_precision": 1.0
     }
   ],

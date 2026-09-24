@@ -29,3 +29,4 @@ results/eweld/
 results/bdg2/degree_day/
 results/bdg2/bdg2_candidate_analysis.csv
 results/anomaly_cases/baseline_O1.csv
+results/anomaly_detection/baseline_lgbm_O1.csv

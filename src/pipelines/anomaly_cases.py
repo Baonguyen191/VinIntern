@@ -1,4 +1,8 @@
-"""Sprint 1: labeled anomaly case set + initial detector, on the shared normalized data set."""
+"""Sprint 1: labeled anomaly case set + initial detector, on the shared normalized data set.
+
+Only keys that are real measurements in the shared set get cases: M1 power_active_kw and
+M2 cooling_kw. See src/anomaly/injection.py for the entity quality gates.
+"""
 import json
 from pathlib import Path
 
@@ -9,24 +13,23 @@ import numpy as np
 import pandas as pd
 
 from ..anomaly import injection as inj
-from ..anomaly.detectors import (
-    EVENT_COLUMNS, band_events, efficiency_events, leak_events, quality_events,
-)
+from ..anomaly.detectors import EVENT_COLUMNS, band_events, baseload_events, quality_events
 from ..anomaly.evaluation import AMPLITUDE_TYPES, deviation_check, match_events, summarize
 from ..anomaly.hourly_baseline import profile_band
-from ..io.normalized_loader import NORMALIZED_DIR, load_equipment_params, load_telemetry
+from ..io.normalized_loader import NORMALIZED_DIR, load_telemetry
 
-M1_SERIES_COLS = ["day_type", "tod_slot", "temperature", "power_active_kw", "power_active_kw_clean",
-                  "co2_ppm", "co2_ppm_clean", "case_id"]
-M2_SERIES_COLS = ["day_type", "tod_slot", "temperature", "cooling_kw", "chiller_power_kw",
-                  "chiller_power_kw_clean", "kw_per_kw_cooling", "kw_per_kw_cooling_clean", "case_id"]
+SERIES_COLS = {
+    "M1": ["day_type", "tod_slot", "temperature", "power_active_kw", "power_active_kw_clean", "case_id"],
+    "M2": ["day_type", "tod_slot", "temperature", "cooling_kw", "cooling_kw_clean", "case_id"],
+}
 
 
-def _load_grids(module, data_dir, value_cols, select_fn):
-    cols = ["entity_id", "ts", "day_type", "primaryspaceusage", *value_cols]
-    df = load_telemetry(module, data_dir, columns=cols)
+def _load_grids(source, data_dir, select_fn):
+    key = inj.SOURCES[source][1]
+    cols = ["entity_id", "ts", "day_type", "primaryspaceusage", key, "temperature"]
+    df = load_telemetry(source, data_dir, columns=cols)
     entities = select_fn(df)
-    return {e: inj.to_hourly_grid(df[df["entity_id"] == e], value_cols) for e in entities}
+    return {e: inj.to_hourly_grid(df[df["entity_id"] == e], [key, "temperature"]) for e in entities}
 
 
 def _stack(series: dict[str, pd.DataFrame], cols: list[str]) -> pd.DataFrame:
@@ -45,10 +48,11 @@ def _o1_rows(entity, key, g, band, layer, window) -> pd.DataFrame:
 
 def _to_o2(events: pd.DataFrame) -> list[dict]:
     evidence_cols = ["actual_mean", "expected_mean", "deviation_pct", "peak_z",
-                     "excess_kwh", "duration_h", "reference_window"]
+                     "excess_kwh", "score", "duration_h", "n_merged", "reference_window"]
     out = []
     for r in events.to_dict("records"):
-        evidence = {c: r[c] for c in evidence_cols if not (isinstance(r[c], float) and np.isnan(r[c]))}
+        evidence = {c: r[c] for c in evidence_cols
+                    if c in r and not (isinstance(r[c], float) and np.isnan(r[c]))}
         out.append({
             "event_id": r["event_id"], "group": r["group"], "module": r["module"],
             "entity_id": r["entity_id"], "key": r["key"], "type": r["type"],
@@ -62,7 +66,7 @@ def _to_o2(events: pd.DataFrame) -> list[dict]:
 
 def _plot_case(lab, g, band, events, out_dir: Path) -> None:
     key = lab.key
-    pad = pd.Timedelta(days=14 if lab.anomaly_type == "efficiency_degradation" else 3)
+    pad = pd.Timedelta(days=3)
     x0, x1 = lab.start - pad, lab.end + pad
     w = (g.index >= x0) & (g.index <= x1)
     x = g.index[w]
@@ -73,9 +77,8 @@ def _plot_case(lab, g, band, events, out_dir: Path) -> None:
     ax.axvspan(lab.start, lab.end + pd.Timedelta(hours=1), color="orange", alpha=0.2, label="injected case")
     for ev in events.itertuples():
         ax.axvspan(ev.start, ev.end + pd.Timedelta(hours=1), ymin=0, ymax=0.06, color="red", alpha=0.8)
-    if band is not None:
-        ax.fill_between(x, band["lower"][w], band["upper"][w], color="gray", alpha=0.2, label="baseline band")
-        ax.plot(x, band["expected"][w], color="black", lw=1, label="expected")
+    ax.fill_between(x, band["lower"][w], band["upper"][w], color="gray", alpha=0.2, label="baseline band")
+    ax.plot(x, band["expected"][w], color="black", lw=1, label="expected")
     ax.plot(x, g[f"{key}_clean"][w], color="steelblue", lw=1, ls="--", alpha=0.7, label="clean (before injection)")
     ax.plot(x, g[key][w], color="crimson", lw=1.1, label="series with case")
     ax.plot([], [], color="red", lw=6, label="detected event")
@@ -89,9 +92,10 @@ def _plot_case(lab, g, band, events, out_dir: Path) -> None:
 
 
 def _plot_recall(per_type: pd.DataFrame, out_dir: Path) -> None:
+    names = per_type["key"] + " / " + per_type["anomaly_type"]
     fig, ax = plt.subplots(figsize=(9, 4))
-    ax.barh(per_type["anomaly_type"], per_type["event_recall"], color="steelblue", label="event recall")
-    ax.barh(per_type["anomaly_type"], per_type["type_match_rate"], color="orange", alpha=0.7,
+    ax.barh(names, per_type["event_recall"], color="steelblue", label="event recall")
+    ax.barh(names, per_type["type_match_rate"], color="orange", alpha=0.7,
             height=0.4, label="correct type")
     ax.set_xlim(0, 1)
     ax.set_xlabel("share of injected cases")
@@ -102,83 +106,83 @@ def _plot_recall(per_type: pd.DataFrame, out_dir: Path) -> None:
     plt.close(fig)
 
 
+def build_case_set(
+    data_dir: str | Path = NORMALIZED_DIR, n_m1: int = 6, n_m2: int = 4, seed: int = 42,
+) -> tuple[dict[str, dict[str, pd.DataFrame]], pd.DataFrame]:
+    """Returns ({source: {entity: hourly grid with injected cases}}, labels)."""
+    rng = np.random.default_rng(seed)
+    selectors = {
+        "M1": lambda df: inj.select_m1_entities(df, n_m1, rng, must_include=("Rat_office_Colby",)),
+        "M2": lambda df: inj.select_m2_entities(df, n_m2, rng),
+    }
+    series, label_parts = {}, []
+    for source, select_fn in selectors.items():
+        grids = _load_grids(source, data_dir, select_fn)
+        print(f"  {source} entities: {list(grids)}")
+        series[source], lab = inj.build_cases(grids, source, rng)
+        label_parts.append(lab)
+    return series, pd.concat(label_parts, ignore_index=True)
+
+
 def run_anomaly_cases_pipeline(
     data_dir: str | Path = NORMALIZED_DIR,
     output_dir: str | Path = "results/anomaly_cases",
     n_m1: int = 6,
-    n_m2: int = 2,
+    n_m2: int = 4,
     seed: int = 42,
     k: float = 3.0,
 ) -> dict:
     out = Path(output_dir)
     plot_dir = out / "plots"
     plot_dir.mkdir(parents=True, exist_ok=True)
-    rng = np.random.default_rng(seed)
-
+    for old in plot_dir.glob("*.png"):
+        old.unlink()
     print("[1/5] Building labeled case set")
-    m1_grids = _load_grids("M1", data_dir, ["power_active_kw", "temperature"],
-                           lambda df: inj.select_m1_entities(df, n_m1, rng, must_include=("Rat_office_Colby",)))
-    print(f"  M1 entities: {list(m1_grids)}")
-    m1_series, m1_labels = inj.build_m1_cases(m1_grids, rng)
-
-    m2_grids = _load_grids("M2", data_dir, ["cooling_kw", "temperature"],
-                           lambda df: inj.select_m2_entities(df, n_m2, rng))
-    print(f"  M2 entities: {list(m2_grids)}")
-    m2_series, m2_labels, chillers = inj.build_m2_cases(m2_grids, load_equipment_params(data_dir), rng)
-    labels = pd.concat([m1_labels, m2_labels], ignore_index=True)
+    series, labels = build_case_set(data_dir, n_m1, n_m2, seed)
 
     print("[2/5] Baseline + detection")
     events, o1, bands = [], [], {}
-    for e, g in m1_series.items():
-        for key, abs_floor, module in (
-            ("power_active_kw", 0.01 * g["power_active_kw_clean"].quantile(0.95), "M1_power"),
-            ("co2_ppm", 20.0, "M4_air"),
-        ):
+    for source, source_series in series.items():
+        module, key = inj.SOURCES[source]
+        for e, g in source_series.items():
+            abs_floor = 0.01 * g[f"{key}_clean"].quantile(0.95)
             band = profile_band(g, key, k=k, abs_floor=abs_floor)
             bands[(e, key)] = band
             o1.append(_o1_rows(e, key, g, band, "history", "rolling 8w"))
             events += band_events(g, key, band, e, module)
-        events += leak_events(g, "power_active_kw", bands[(e, "power_active_kw")], e, "M1_power")
-        events += quality_events(g, "power_active_kw", e, "M1_power")
+            if "baseload_rise" in inj.CASE_PLANS[source]:
+                events += baseload_events(g, key, band, e, module)
+            events += quality_events(g, key, e, module)
 
-    for e, g in m2_series.items():
-        ev, expected = efficiency_events(g, e, chillers[e], inj.B_REFERENCE)
-        events += ev
-        band = pd.DataFrame({"expected": expected, "lower": np.nan, "upper": expected * 1.08})
-        bands[(e, "kw_per_kw_cooling")] = band
-        o1.append(_o1_rows(e, "kw_per_kw_cooling", g, band, "history",
-                           f"fixed {inj.B_REFERENCE[0].date()}..{inj.B_REFERENCE[1].date()}"))
-
-    events_df = pd.DataFrame(events, columns=EVENT_COLUMNS).sort_values(["entity_id", "start"])
+    events_df = pd.DataFrame(events, columns=EVENT_COLUMNS).sort_values(["entity_id", "key", "start"])
     events_df["event_id"] = [f"EV-{i:05d}" for i in range(1, len(events_df) + 1)]
     print(f"  {len(events_df)} events")
 
     print("[3/5] Event-level evaluation")
     cases, events_df = match_events(labels, events_df)
-    all_series = {**m1_series, **m2_series}
+    # The same building can appear in M1 and M2, so series are keyed by (entity, key).
+    all_series = {(e, inj.SOURCES[s][1]): g for s, ss in series.items() for e, g in ss.items()}
     checks = []
     for lab in labels[labels["source"] == "injected"].itertuples():
-        if lab.anomaly_type in AMPLITUDE_TYPES or lab.anomaly_type == "efficiency_degradation":
+        if lab.anomaly_type in AMPLITUDE_TYPES:
             checks.append({"case_id": lab.case_id,
-                           **deviation_check(lab, all_series[lab.entity_id], bands[(lab.entity_id, lab.key)]["expected"])})
+                           **deviation_check(lab, all_series[(lab.entity_id, lab.key)],
+                                             bands[(lab.entity_id, lab.key)]["expected"])})
     if checks:
         cases = cases.merge(pd.DataFrame(checks), on="case_id", how="left")
-    entity_days = {"power_active_kw": len(m1_series) * 365.0, "co2_ppm": len(m1_series) * 365.0,
-                   "kw_per_kw_cooling": len(m2_series) * 365.0}
+    entity_days = {inj.SOURCES[s][1]: len(ss) * 365.0 for s, ss in series.items()}
     per_type, overall = summarize(cases, events_df, entity_days)
     overall["seed"], overall["k"] = seed, k
 
     print("[4/5] Writing outputs")
     labels.to_csv(out / "labels.csv", index=False)
-    _stack(m1_series, M1_SERIES_COLS).to_csv(out / "series_M1.csv", index=False)
-    _stack(m2_series, M2_SERIES_COLS).to_csv(out / "series_M2.csv", index=False)
+    for source, source_series in series.items():
+        _stack(source_series, SERIES_COLS[source]).to_csv(out / f"series_{source}.csv", index=False)
     pd.concat(o1, ignore_index=True).round({"expected": 3, "lower": 3, "upper": 3}) \
         .to_csv(out / "baseline_O1.csv", index=False)
     events_df.to_csv(out / "events.csv", index=False)
     with open(out / "events_O2.json", "w", encoding="utf-8") as f:
         json.dump(_to_o2(events_df), f, indent=2, ensure_ascii=False)
-    with open(out / "virtual_chillers.json", "w", encoding="utf-8") as f:
-        json.dump(chillers, f, indent=2, ensure_ascii=False)
     cases.to_csv(out / "eval_cases.csv", index=False)
     per_type.to_csv(out / "eval_by_type.csv", index=False)
     with open(out / "eval_overall.json", "w", encoding="utf-8") as f:
@@ -186,11 +190,9 @@ def run_anomaly_cases_pipeline(
 
     print("[5/5] Plots")
     for lab in labels[labels["source"] == "injected"].itertuples():
-        g = all_series[lab.entity_id]
-        band = bands[(lab.entity_id, lab.key)]
+        g = all_series[(lab.entity_id, lab.key)]
         ev = events_df[(events_df["entity_id"] == lab.entity_id) & (events_df["key"] == lab.key)]
-        _plot_case(lab, g, band if lab.anomaly_type != "efficiency_degradation" else band[["expected"]].assign(
-            lower=np.nan, upper=np.nan), ev, plot_dir)
+        _plot_case(lab, g, bands[(lab.entity_id, lab.key)], ev, plot_dir)
     _plot_recall(per_type, out)
 
     print("\nPer type:")

@@ -9,7 +9,7 @@ def main():
     parser.add_argument("--output", default=None, help="Output directory")
     parser.add_argument(
         "--pipeline",
-        choices=["towt", "degree-day", "bdg2", "statistical", "anomaly-cases"],
+        choices=["towt", "degree-day", "bdg2", "statistical", "anomaly-cases", "anomaly-detect"],
         default="degree-day",
         help="Pipeline type (default: degree-day)",
     )
@@ -46,7 +46,7 @@ def main():
     # Anomaly-cases-specific
     parser.add_argument(
         "--data-dir", default=None,
-        help="Normalized data folder (default: data/normalized)",
+        help="Normalized data folder (default: data_normalized, else data/normalized)",
     )
     parser.add_argument("--seed", type=int, default=42, help="Case generation seed (default: 42)")
 
@@ -61,6 +61,15 @@ def main():
             output_dir=args.output or "results/anomaly_cases",
             seed=args.seed,
             k=args.k,
+        )
+    elif args.pipeline == "anomaly-detect":
+        from src.pipelines.anomaly_detection import run_anomaly_detection_pipeline
+        from src.io.normalized_loader import NORMALIZED_DIR
+
+        run_anomaly_detection_pipeline(
+            data_dir=args.data_dir or NORMALIZED_DIR,
+            output_dir=args.output or "results/anomaly_detection",
+            seed=args.seed,
         )
     elif args.pipeline == "statistical":
         from src.pipelines.statistical import run_statistical_pipeline
