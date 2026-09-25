@@ -9,7 +9,7 @@ def main():
     parser.add_argument("--output", default=None, help="Output directory")
     parser.add_argument(
         "--pipeline",
-        choices=["towt", "degree-day", "bdg2", "statistical"],
+        choices=["towt", "degree-day", "bdg2", "statistical", "anomaly-cases", "anomaly-detect"],
         default="degree-day",
         help="Pipeline type (default: degree-day)",
     )
@@ -43,9 +43,35 @@ def main():
         help="Rolling window size in days for statistical baseline (default: 28)",
     )
 
+    # Anomaly case set
+    parser.add_argument(
+        "--n-entities", type=int, default=20,
+        help="Office buildings in the anomaly case set (default: 20)",
+    )
+    parser.add_argument("--seed", type=int, default=42, help="Random seed (default: 42)")
+    parser.add_argument(
+        "--budget", type=float, default=0.2,
+        help="Alert budget per entity per day for anomaly detection (default: 0.2)",
+    )
+
     args = parser.parse_args()
 
-    if args.pipeline == "statistical":
+    if args.pipeline == "anomaly-cases":
+        from src.pipelines.anomaly_cases import run_case_pipeline
+
+        run_case_pipeline(
+            output_dir=args.output or "results/anomaly_cases",
+            n_entities=args.n_entities,
+            seed=args.seed,
+        )
+    elif args.pipeline == "anomaly-detect":
+        from src.pipelines.anomaly_detect import run_detection_pipeline
+
+        run_detection_pipeline(
+            output_dir=args.output or "results/anomaly_detection",
+            budget_per_day=args.budget,
+        )
+    elif args.pipeline == "statistical":
         from src.pipelines.statistical import run_statistical_pipeline
 
         run_statistical_pipeline(

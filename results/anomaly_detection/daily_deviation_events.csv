@@ -1,0 +1,27 @@
+entity_id,detector,start,end,duration_h,peak_score,peak_ts
+Rat_office_Colby,residual_robust_z,2017-04-03,2017-04-03 23:00:00,24,4.56414699254653,2017-04-03
+Rat_office_Colby,residual_robust_z,2017-05-13,2017-05-13 23:00:00,24,6.442793514761609,2017-05-13
+Rat_office_Colby,residual_robust_z,2017-06-22,2017-06-23 23:00:00,48,3.609073232775499,2017-06-23
+Rat_office_Colby,residual_robust_z,2017-09-19,2017-09-19 23:00:00,24,5.512608134983603,2017-09-19
+Rat_office_Colby,residual_robust_z,2017-12-31,2017-12-31 23:00:00,24,3.0480787538625598,2017-12-31
+Rat_office_Colby,residual_cusum,2017-04-30,2017-05-03 23:00:00,96,7.297859263924278,2017-05-01
+Rat_office_Colby,residual_cusum,2017-05-12,2017-05-14 23:00:00,72,5.942793514761609,2017-05-13
+Rat_office_Colby,residual_cusum,2017-05-18,2017-05-18 23:00:00,24,5.144388727672776,2017-05-18
+Rat_office_Colby,residual_cusum,2017-07-27,2017-08-19 23:00:00,576,16.478534045855824,2017-08-04
+Rat_office_Colby,residual_cusum,2017-12-31,2017-12-31 23:00:00,24,6.217935886475791,2017-12-31
+Rat_office_Colby,data_quality,2017-01-09,2017-01-10 00:00:00,48,,
+Rat_office_Colby,data_quality,2017-01-16,2017-01-19 00:00:00,96,,
+Rat_office_Colby,data_quality,2017-02-20,2017-02-20 00:00:00,24,,
+Rat_office_Colby,data_quality,2017-03-18,2017-03-18 00:00:00,24,,
+Rat_office_Colby,data_quality,2017-04-18,2017-04-20 00:00:00,72,,
+Rat_office_Colby,data_quality,2017-05-29,2017-05-29 00:00:00,24,,
+Rat_office_Colby,data_quality,2017-06-16,2017-06-18 00:00:00,72,,
+Rat_office_Colby,data_quality,2017-07-04,2017-07-04 00:00:00,24,,
+Rat_office_Colby,data_quality,2017-08-28,2017-08-31 00:00:00,96,,
+Rat_office_Colby,data_quality,2017-09-04,2017-09-04 00:00:00,24,,
+Rat_office_Colby,data_quality,2017-10-09,2017-10-09 00:00:00,24,,
+Rat_office_Colby,data_quality,2017-11-10,2017-11-11 00:00:00,48,,
+Rat_office_Colby,data_quality,2017-11-14,2017-11-14 00:00:00,24,,
+Rat_office_Colby,data_quality,2017-11-23,2017-11-23 00:00:00,24,,
+Rat_office_Colby,data_quality,2017-12-16,2017-12-16 00:00:00,24,,
+Rat_office_Colby,data_quality,2017-12-25,2017-12-25 00:00:00,24,,

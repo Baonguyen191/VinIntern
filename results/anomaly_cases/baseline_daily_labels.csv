@@ -1,0 +1,10 @@
+case_id,entity_id,key,type,group,start,end,duration_h,magnitude,detail,is_synthetic
+D0001,Rat_office_Colby,actual_kWh,data_missing,DQ,2017-01-17,2017-01-19,72,,daily,True
+D0002,Rat_office_Colby,actual_kWh,spike,A,2017-04-03,2017-04-03,24,1.3905782174327475,daily,True
+D0003,Rat_office_Colby,actual_kWh,data_missing,DQ,2017-04-18,2017-04-20,72,,daily,True
+D0004,Rat_office_Colby,actual_kWh,spike,A,2017-05-13,2017-05-13,24,1.5755325686546664,daily,True
+D0005,Rat_office_Colby,actual_kWh,level_shift,A,2017-06-21,2017-06-27,168,0.1686096365105449,daily,True
+D0006,Rat_office_Colby,actual_kWh,level_shift,A,2017-07-25,2017-08-04,264,0.14543179618417468,daily,True
+D0007,Rat_office_Colby,actual_kWh,spike,A,2017-09-19,2017-09-19,24,1.3331765232988333,daily,True
+D0008,Rat_office_Colby,actual_kWh,level_shift,A,2017-09-30,2017-10-06,168,0.129535902534409,daily,True
+D0009,Rat_office_Colby,actual_kWh,spike,A,2017-11-05,2017-11-05,24,1.4375644245395653,daily,True

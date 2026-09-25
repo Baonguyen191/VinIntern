@@ -5,3 +5,4 @@ matplotlib>=3.7
 lightgbm>=4.0
 scipy>=1.11
 holidays>=0.34
+streamlit>=1.40
