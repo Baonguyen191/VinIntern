@@ -2,10 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-REPORT_PATH = os.path.join(BASE_DIR, 'forecast_final_report.csv')
-REGRESSION_COMP_PATH = os.path.join(BASE_DIR, 'regression_vs_baseline.csv')
-FORECAST_PARQUET_PATH = os.path.join(BASE_DIR, 'data_normalized', 'forecast_test_results.parquet')
+from paths import FORECAST_REPORT_PATH as REPORT_PATH, REGRESSION_COMP_PATH, FORECAST_PARQUET_PATH
 
 def build_forecast_final_report():
     """
@@ -17,7 +14,7 @@ def build_forecast_final_report():
     """
     print("[FORECAST_FINAL] Building forecast_final_report.csv...", flush=True)
     if not os.path.exists(REGRESSION_COMP_PATH):
-        raise FileNotFoundError(f"Missing {REGRESSION_COMP_PATH}. Please run Sprint 2 first.")
+        raise FileNotFoundError(f"Missing {REGRESSION_COMP_PATH}. Please run `python scripts/train_ridge.py` first.")
         
     df_comp = pd.read_csv(REGRESSION_COMP_PATH)
     df_fc = pd.read_parquet(FORECAST_PARQUET_PATH)

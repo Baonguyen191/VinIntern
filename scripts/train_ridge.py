@@ -1,8 +1,13 @@
 import os
+import sys
 import time
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import Ridge
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
+from paths import (TELEMETRY_M1_PATH, TELEMETRY_M2_PATH, OUTPUTS_DIR,
+                   REGRESSION_COMP_PATH, FORECAST_PARQUET_PATH, SCENARIOS_PATH)
 
 def prepare_features_and_split(df_raw, entity_col, ts_col, value_col, metric_name):
     print(f"\n[{metric_name}] Starting feature preparation for {df_raw[entity_col].nunique()} buildings...", flush=True)
@@ -331,14 +336,14 @@ def export_optimization_csv(df_scenarios, out_path):
     print(f"[OPTIMIZATION] Successfully exported {out_path} ({len(df_scenarios)} rows).", flush=True)
 
 def main():
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    m1_path = os.path.join(base_dir, 'data_normalized', 'telemetry_M1.parquet')
-    m2_path = os.path.join(base_dir, 'data_normalized', 'telemetry_M2.parquet')
-    
-    out_comparison = os.path.join(base_dir, 'regression_vs_baseline.csv')
-    out_forecast = os.path.join(base_dir, 'data_normalized', 'forecast_test_results.parquet')
-    out_scenarios = os.path.join(base_dir, 'optimization_scenarios_preliminary.csv')
-    
+    m1_path = TELEMETRY_M1_PATH
+    m2_path = TELEMETRY_M2_PATH
+
+    os.makedirs(OUTPUTS_DIR, exist_ok=True)
+    out_comparison = REGRESSION_COMP_PATH
+    out_forecast = FORECAST_PARQUET_PATH
+    out_scenarios = SCENARIOS_PATH
+
     all_reports = []
     all_forecasts = []
     

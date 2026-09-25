@@ -2,20 +2,14 @@ import os
 import pandas as pd
 import numpy as np
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Real outputs: data/teammates/{baseline,anomaly}_output.csv
+# Mock outputs: tests/fixtures/mock_{baseline,anomaly}.csv
+from paths import REAL_BASELINE_PATH, REAL_ANOMALY_PATH, MOCK_BASELINE_PATH, MOCK_ANOMALY_PATH
 
 # ==============================================================================
 # CONFIGURATION SWITCH: SET TO FALSE ONCE TEAMMATES 1 & 2 DELIVER REAL OUTPUTS
 # ==============================================================================
 USE_MOCK = True  # <-- ĐỔI THÀNH False KHI CÓ FILE THẬT TỪ 2 BẠN
-
-# File paths for Real Teammate Outputs (Expected in Sprint 3)
-REAL_BASELINE_PATH = os.path.join(BASE_DIR, 'baseline_output.csv')
-REAL_ANOMALY_PATH = os.path.join(BASE_DIR, 'anomaly_output.csv')
-
-# File paths for Disciplined Mock Outputs (Stored in test_fixtures/)
-MOCK_BASELINE_PATH = os.path.join(BASE_DIR, 'test_fixtures', 'mock_baseline.csv')
-MOCK_ANOMALY_PATH = os.path.join(BASE_DIR, 'test_fixtures', 'mock_anomaly.csv')
 
 # In-memory caches to ensure high dashboard performance
 _baseline_cache = None

@@ -5,10 +5,7 @@ import pandas as pd
 from scipy.optimize import milp, LinearConstraint, Bounds
 from scipy.sparse import coo_matrix
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-EQUIPMENT_PATH = os.path.join(BASE_DIR, 'data_normalized', 'equipment_params.csv')
-TARIFF_PATH = os.path.join(BASE_DIR, 'data_normalized', 'tariff_params.csv')
-RANKING_CSV_PATH = os.path.join(BASE_DIR, 'recommendation_ranking.csv')
+from paths import EQUIPMENT_PATH, TARIFF_PATH, RANKING_CSV_PATH
 
 def load_equipment(path=EQUIPMENT_PATH):
     if not os.path.exists(path):
@@ -270,10 +267,10 @@ def solve_heuristic_shave(L, price, ch_const, DT=1.0):
 
 def generate_recommendation_ranking(building_id='Bull_education_Luke', as_of_time=None):
     """
-    Runs forecast_final to get 24h cooling load forecast, evaluates all 4 scenarios,
+    Runs forecast to get 24h cooling load forecast, evaluates all 4 scenarios,
     verifies constraints, and outputs recommendation_ranking.csv.
     """
-    from forecast_final import predict_next_24h
+    from forecast import predict_next_24h
     print(f"\n[OPT_SOLVER] Generating 24h operational recommendations for '{building_id}'...", flush=True)
     
     # 1. Get real 24h cooling load forecast

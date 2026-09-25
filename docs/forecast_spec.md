@@ -10,8 +10,8 @@ Dự báo được thực hiện độc lập cho 2 phân hệ telemetry chính:
 
 | Phân hệ | File Dữ Liệu | Chỉ Số Dự Báo | Đơn Vị | Mô Tả |
 |---|---|---|---|---|
-| **M1 — Điện năng** | `data_normalized/telemetry_M1.parquet` | `power_active_kw` | kW | Công suất điện chủ động của toàn tòa nhà / phụ tải tổng |
-| **M2 — Chiller** | `data_normalized/telemetry_M2.parquet` | `cooling_kw` | kW | Phụ tải lạnh cần cung cấp cho tòa nhà |
+| **M1 — Điện năng** | `data/normalized/telemetry_M1.parquet` | `power_active_kw` | kW | Công suất điện chủ động của toàn tòa nhà / phụ tải tổng |
+| **M2 — Chiller** | `data/normalized/telemetry_M2.parquet` | `cooling_kw` | kW | Phụ tải lạnh cần cung cấp cho tòa nhà |
 
 ---
 

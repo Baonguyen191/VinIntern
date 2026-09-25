@@ -28,7 +28,7 @@ Mỗi điểm bản ghi (record) trên hệ thống Dashboard/Demo bao gồm 10 
 
 ## 2. Quy Định Phân Định Dữ Liệu THẬT vs MOCK Tại Sprint 1
 
-Do 2 thành viên phụ trách Baseline và Anomaly đang hoàn thiện mô hình ở Sprint 1, script `dashboard_v1.py` sẽ áp dụng cơ chế:
+Do 2 thành viên phụ trách Baseline và Anomaly đang hoàn thiện mô hình ở Sprint 1, dashboard (Sprint 1: `dashboard_v1.py`, nay là `src/dashboard.py` qua `src/teammate_adapter.py`) sẽ áp dụng cơ chế:
 
 - **Dữ liệu THẬT (Real Data)**:
   - `timestamp`, `building_id`, `metric`, `value_actual`: Đọc trực tiếp từ `telemetry_M1.parquet` và `telemetry_M2.parquet`.

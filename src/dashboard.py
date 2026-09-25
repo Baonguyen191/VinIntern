@@ -6,9 +6,10 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
 # Import modules from Sprint 3
-from forecast_final import get_final_report, predict_next_24h
-from teammate_outputs_adapter import get_baseline_expected, get_anomaly_flags, get_adapter_status, USE_MOCK
-from opt_solver import generate_recommendation_ranking, RANKING_CSV_PATH, load_equipment, get_chiller_constants, get_tou_price, solve_milp, verify_constraints
+from forecast import get_final_report, predict_next_24h
+from teammate_adapter import get_baseline_expected, get_anomaly_flags, get_adapter_status, USE_MOCK
+from optimizer import generate_recommendation_ranking, RANKING_CSV_PATH, load_equipment, get_chiller_constants, get_tou_price, solve_milp, verify_constraints
+from paths import FORECAST_PARQUET_PATH
 
 # Streamlit Page Setup
 st.set_page_config(
@@ -16,9 +17,6 @@ st.set_page_config(
     page_icon="⚡",
     layout="wide"
 )
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-FORECAST_PARQUET_PATH = os.path.join(BASE_DIR, 'data_normalized', 'forecast_test_results.parquet')
 
 @st.cache_data
 def load_all_forecast_data():
@@ -39,7 +37,7 @@ st.markdown("""
 # Mandatory Header Notice as specified in Sprint 3 prompt
 st.warning(f"""
 ⚠️ **CHÚ THÍCH HỆ THỐNG**: 
-**Baseline và Bất thường: dữ liệu MOCK**, đang chờ kết quả thật từ Bạn 1 (Baseline) & Bạn 2 (Anomaly) — sẽ tự động cập nhật khi `teammate_outputs_adapter.py` được chuyển sang `USE_MOCK=False`.
+**Baseline và Bất thường: dữ liệu MOCK**, đang chờ kết quả thật từ Bạn 1 (Baseline) & Bạn 2 (Anomaly) — sẽ tự động cập nhật khi `src/teammate_adapter.py` được chuyển sang `USE_MOCK=False`.
 *Trạng thái Adapter hiện tại:* `{get_adapter_status()}`.
 """)
 
@@ -198,7 +196,7 @@ st.subheader("⚙️ Tối Ưu Hóa Vận Hành Chiller Bằng Bộ Giải Toán
 
 st.info("""
 📌 **NGUYÊN TẮC TỐI ƯU HÓA MILP (VIỆC 2 SPRINT 3):**
-- **Đầu vào dự báo**: Lấy tải lạnh dự báo 24h tới trực tiếp từ mô hình hoàn thiện `forecast_final.py` (KHÔNG chạy trên tải lịch sử).
+- **Đầu vào dự báo**: Lấy tải lạnh dự báo 24h tới trực tiếp từ mô hình hoàn thiện `src/forecast.py` (KHÔNG chạy trên tải lịch sử).
 - **Bộ giải toán học**: Sử dụng `scipy.optimize.milp` (Solver HiGHS), giải bài toán Unit-Commitment + Optimal Chiller Loading.
 - **Ràng buộc vật lý đầy đủ**: Cân bằng phụ tải, giới hạn công suất, đường cong EIR-FPLR tuyến tính hóa bằng 12 tiếp tuyến, thời gian chạy/dừng tối thiểu (min up/down time = 1h), giới hạn số lần khởi động máy <= 3 lần/ngày.
 """)
