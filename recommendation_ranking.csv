@@ -1,0 +1,8 @@
+﻿# Biểu giá: TẠM DÙNG, chưa phải số liệu được cấp chính thức — kết quả sẽ thay đổi khi có số liệu thật.
+# Căn cứ tham chiếu: Quyết định 1279/QĐ-BCT (09/05/2025) & 963/QĐ-BCT (30/06/2026), biểu giá điện kinh doanh >= 22kV.
+# Mọi con số đều là ước tính trong các điều kiện giả định nêu ở cột dieu_kien_ap_dung, không khẳng định chắc chắn.
+rank,scenario_name,est_saving_kwh,est_saving_vnd,est_saving_pct,dieu_kien_ap_dung,muc_do_tin_cay,constraints_checked
+1,Tối ưu hóa MILP (HiGHS Unit Commitment + Optimal Chiller Loading),176.62,677134.0,5.95,"Ước tính trong điều kiện phụ tải dự báo 24h của tòa nhà Bull_education_Luke, cụm 4 Chiller theo hồ sơ equipment_params.csv, biểu giá TOU kinh doanh EVN >= 22kV",trung bình-cao,True
+2,Dịch tải thủ công (Rule-based Load Shifting 15%),4.56,391375.0,3.44,Ước tính trong điều kiện dịch chuyển 15% phụ tải giờ cao điểm sang giờ thấp điểm bằng luật if-then; tổng kWh tiêu thụ không đổi,thấp,True
+3,Giảm đỉnh đơn giản (Rule-based Peak Shaving 10%),74.95,376611.0,3.31,Ước tính trong điều kiện cắt giảm 10% công suất giờ cao điểm nhờ tăng nhiệt độ setpoint điều hòa 1-2°C / giảm chiếu sáng phụ trợ,thấp,True
+4,Hiện trạng vận hành (Rule-based Staging + Equal PLR),0.0,0.0,0.0,"Vận hành theo quy tắc bật tắt ngưỡng bậc 90%/55% truyền thống, chia tải đều theo tỷ lệ công suất định mức",cơ sở,True
