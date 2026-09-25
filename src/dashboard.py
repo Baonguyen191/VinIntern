@@ -201,9 +201,11 @@ st.info("""
 - **Ràng buộc vật lý đầy đủ**: Cân bằng phụ tải, giới hạn công suất, đường cong EIR-FPLR tuyến tính hóa bằng 12 tiếp tuyến, thời gian chạy/dừng tối thiểu (min up/down time = 1h), giới hạn số lần khởi động máy <= 3 lần/ngày.
 """)
 
-# Run or load ranking
+# Run or load ranking for the selected building and date
 try:
-    df_rank, milp_sol = generate_recommendation_ranking(selected_building)
+    target_chiller_bld = selected_building if selected_metric == 'cooling_kw' else 'Bull_education_Luke'
+    opt_date = f"{start_date} 00:00:00" if len(date_range) == 2 else None
+    df_rank, milp_sol = generate_recommendation_ranking(target_chiller_bld, as_of_time=opt_date)
     
     col_kpi1, col_kpi2, col_kpi3 = st.columns(3)
     milp_row = df_rank[df_rank['scenario_name'].str.contains('MILP')]
@@ -219,29 +221,33 @@ try:
 
     # Gantt Chart of Chiller Schedule
     if milp_sol.get('success', False) and 'on' in milp_sol:
-        st.subheader("📅 Lịch Vận Hành Gợi Ý Cho Cụm Chiller (Biểu Đồ Gantt)")
+        st.subheader(f"📅 Lịch Vận Hành Gợi Ý Cho Cụm Chiller (Biểu Đồ Gantt) — {target_chiller_bld}")
         on_matrix = milp_sol['on'] # Shape (4, 24)
         eq_df = load_equipment()
         ch_names = [f"{r['chiller_id']} ({r['model_type'].split('(')[0].strip()}, {r['q_rated_kw']}kW)" for _, r in eq_df.iterrows()]
         
+        if on_matrix.sum() == 0:
+            st.info("ℹ️ **Toàn bộ 4 máy Chiller đang TẮT (OFF)**: Do phụ tải làm mát dự báo trong 24 giờ này bằng 0 kW (tòa nhà đóng cửa hoặc ngày đông không cần cấp lạnh). Bộ giải MILP đã tối ưu bằng cách tắt toàn bộ máy để không phát sinh chi phí điện.")
+        
         fig_gantt, ax_gantt = plt.subplots(figsize=(14, 3.8))
         hours = np.arange(24)
-        
         colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']
         
+        has_running = False
         for i in range(len(ch_names)):
             for t in range(24):
                 if on_matrix[i, t] == 1:
+                    has_running = True
                     ax_gantt.broken_barh([(t, 1)], (i - 0.35, 0.7), facecolors=colors[i], edgecolor='black', alpha=0.85)
                     
         ax_gantt.set_yticks(range(len(ch_names)))
         ax_gantt.set_yticklabels(ch_names, fontsize=10)
         ax_gantt.set_xticks(range(25))
         ax_gantt.set_xlabel("Khung giờ trong ngày (00:00 - 24:00)", fontsize=11)
-        ax_gantt.set_title("Lịch cam kết máy Chiller (Unit Commitment) theo 24 giờ do Bộ giải MILP tối ưu", fontsize=12)
+        ax_gantt.set_title(f"Lịch cam kết máy Chiller (Unit Commitment) theo 24 giờ do Bộ giải MILP tối ưu ({target_chiller_bld})", fontsize=12)
         ax_gantt.grid(True, axis='x', linestyle=':', alpha=0.6)
         
-        # Highlight peak hours (18h-23h)
+        # Highlight peak hours (18h-23h) and offpeak (0h-6h)
         ax_gantt.axvspan(18, 23, color='red', alpha=0.12, label='Giờ cao điểm EVN (18h-23h: 5.025 đ/kWh)')
         ax_gantt.axvspan(0, 6, color='blue', alpha=0.08, label='Giờ thấp điểm EVN (0h-6h: 1.609 đ/kWh)')
         ax_gantt.legend(loc='upper right', fontsize=9)
